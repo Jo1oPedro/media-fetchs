@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/var/www/app
+    ports:
+      - '8000:8000'
+      - '5173:5173'
+    tty: true
+    stdin_open: true
+    networks:
+      - my-shared-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./app/redis:/data"
+    networks:
+      - my-shared-network
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 200M
+        reservations:
+          cpus: "0.1"
+          memory: 20M
+      restart_policy:
+        condition: on-failure
+    command: [ "redis-server", "--bind", "0.0.0.0" ]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - my-shared-network
+
+networks:
+  my-shared-network:
+    driver: bridge
