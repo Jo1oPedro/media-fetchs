@@ -12,12 +12,12 @@ $(function () {
         }
 
         const csrfToken = $("meta[name='csrf-token']").attr("content");
-
+        console.log(csrfToken);
         $.ajax({
             url: "/api/download/media",
             method: "POST",
             headers: {
-                'X-XSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': csrfToken
             },
             data: {
                 url: url,
