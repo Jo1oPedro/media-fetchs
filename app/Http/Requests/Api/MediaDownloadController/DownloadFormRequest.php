@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\MediaDownloadController;
 
+use App\Rules\SupportedSocialNetworkUrl;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DownloadFormRequest extends FormRequest
@@ -22,7 +23,7 @@ class DownloadFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "url" => ["required", "url"]
+            "url" => ["required", "url", new SupportedSocialNetworkUrl()]
         ];
     }
 }
