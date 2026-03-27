@@ -12,9 +12,14 @@ RUN apt-get update -y \
     unzip \
     p7zip-full \
     telnet \
-    curl
+    curl \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    supervisor
 
-RUN docker-php-ext-install sockets mysqli pdo pdo_mysql session
+RUN docker-php-ext-install pcntl sockets mysqli pdo pdo_mysql session \
+    && pecl install swoole \
+    && docker-php-ext-enable swoole
 
 RUN curl -sS https://getcomposer.org/installer | php \
     -- --install-dir=/usr/local/bin --filename=composer
@@ -26,6 +31,12 @@ COPY --chown=www-data:www-data . .
 
 COPY composer.* ./
 
+RUN npm install -g chokidar
+
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 RUN rm -rf vendor && rm -rf node_modules \
     && composer install --prefer-dist --no-scripts --no-progress --no-interaction \
     && composer dump-autoload --optimize
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
