@@ -12,7 +12,7 @@ $(function () {
         }
 
         const csrfToken = $("meta[name='csrf-token']").attr("content");
-        console.log(csrfToken);
+
         $.ajax({
             url: "/api/download/media",
             method: "POST",
@@ -31,8 +31,8 @@ $(function () {
                 alert("URL salva com sucesso!");
             },
             error: function (xhr) {
-                console.error(xhr.responseText);
-                alert("Erro ao salvar a URL.");
+                const response = JSON.parse(xhr.responseText);
+                alert(response.message);
             }
         });
     });
