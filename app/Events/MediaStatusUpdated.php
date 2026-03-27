@@ -32,7 +32,6 @@ class MediaStatusUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        Log::error("entrou 123");
         return [
             new PrivateChannel('media.' . $this->media->id),
         ];
@@ -40,7 +39,6 @@ class MediaStatusUpdated implements ShouldBroadcastNow
 
     public function broadcastWith(): array
     {
-        Log::error("entrou");
         return [
             'media' => [
                 'id' => $this->media->id,
