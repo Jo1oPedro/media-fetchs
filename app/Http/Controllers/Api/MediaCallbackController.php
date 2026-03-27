@@ -7,7 +7,7 @@ use App\Http\Requests\Api\MediaController\UpdateMediaStatusFormRequest;
 use App\Models\Media;
 use Illuminate\Support\Facades\Log;
 
-class MediaController extends Controller
+class MediaCallbackController extends Controller
 {
     public function updateMediaStatus(UpdateMediaStatusFormRequest $request, Media $media)
     {
