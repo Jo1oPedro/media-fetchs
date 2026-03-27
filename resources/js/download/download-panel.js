@@ -14,7 +14,7 @@ $(function () {
         const csrfToken = $("meta[name='csrf-token']").attr("content");
 
         $.ajax({
-            url: "/api/download/media",
+            url: "/api/media",
             method: "POST",
             headers: {
                 'X-CSRF-TOKEN': csrfToken
