@@ -1,6 +1,20 @@
 import $ from 'jquery';
 
+function listenForMediaUpdates() {
+    $('[data-media-id]').each(function () {
+        const mediaId = $(this).data('media-id');
+        const $card = $(this);
+
+        window.Echo.private(`media.${mediaId}`)
+            .listen('MediaStatusUpdated', (e) => {
+                $card.find('.rounded-full').text(e.media.status.charAt(0).toUpperCase() + e.media.status.slice(1));
+            });
+    });
+}
+
 $(function () {
+    listenForMediaUpdates();
+
     $("#download-form button").on("click", function (e) {
         e.preventDefault();
 

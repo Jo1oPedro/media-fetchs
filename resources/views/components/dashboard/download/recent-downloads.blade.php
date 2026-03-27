@@ -6,7 +6,7 @@
 
     <div class="space-y-4">
         @foreach($recentMediaDownloads as $media)
-            <div class="flex flex-col md:flex-row items-center gap-4 p-4 bg-gray-50 rounded-lg">
+            <div class="flex flex-col md:flex-row items-center gap-4 p-4 bg-gray-50 rounded-lg" data-media-id="{{ $media->id }}">
                 <div class="flex gap-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center">
                         <x-dynamic-component

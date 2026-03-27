@@ -19,6 +19,7 @@
         "hasnayeen/blade-eva-icons": "^2.1",
         "laravel/framework": "^12.0",
         "laravel/octane": "*",
+        "laravel/reverb": "^1.9",
         "laravel/sanctum": "^4.2",
         "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.10.1",

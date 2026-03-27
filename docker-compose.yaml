@@ -7,6 +7,7 @@ services:
     ports:
       - '8000:8000'
       - '5173:5173'
+      - '8080:8080'
     environment:
       LARAVEL_OCTANE_PORT: '8000'
     tty: true
