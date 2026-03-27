@@ -18,7 +18,7 @@ class MediaDownloadController extends Controller
     public function download(DownloadFormRequest $request): JsonResponse
     {
         try {
-            $this->mediaHelper->publishMediaRabbitMQ(
+            $media = $this->mediaHelper->publishMediaRabbitMQ(
                 url: $request->input("url")
             );
         } catch (\Exception $exception) {
@@ -32,6 +32,15 @@ class MediaDownloadController extends Controller
             ], 500);
         }
 
-        return response()->json(["message" => "Url salva com sucesso!"]);
+        return response()->json([
+            "message" => "Url salva com sucesso!",
+            "media" => [
+                "id" => $media->id,
+                "status" => $media->status ?? "pending",
+                "platform" => $media->socialNetwork?->slug,
+                "format" => $media->format,
+                "original_url" => $media->original_url,
+            ]
+        ]);
     }
 }

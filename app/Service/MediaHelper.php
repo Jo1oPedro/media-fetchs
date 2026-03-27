@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Models\Media;
 use App\Models\SocialNetwork;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,7 @@ class MediaHelper
         protected RabbitMQService $rabbitMQService,
     ){}
 
-    public function publishMediaRabbitMQ(string $url, string $format = "mp4"): void
+    public function publishMediaRabbitMQ(string $url, string $format = "mp4"): Media
     {
         $platform = SocialNetwork::all()->first(function ($network) use ($url) {
            return str_contains($url, $network->base_url);
@@ -28,5 +29,7 @@ class MediaHelper
             "download_url" => $url,
             "format" => $format
         ]));
+
+        return $media->load('socialNetwork');
     }
 }
