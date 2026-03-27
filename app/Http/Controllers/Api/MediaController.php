@@ -11,16 +11,6 @@ class MediaController extends Controller
 {
     public function updateMediaStatus(UpdateMediaStatusFormRequest $request, Media $media)
     {
-        Log::error(
-            print_r(
-                [
-                    $request->input("url"),
-                    $request->input("status")
-                ],
-                true
-            )
-        );
-
         Media::whereId($request->input("media_id"))->update([
             "s3_url" => $request->input("url"),
             "status" => $request->input("status")
