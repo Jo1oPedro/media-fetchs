@@ -1,6 +1,7 @@
 FROM php:8.4-cli
 
 ARG APP_DIR=/var/www/app
+ARG APP_ENV=local
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends curl \
@@ -37,6 +38,9 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN rm -rf vendor && rm -rf node_modules \
     && composer install --prefer-dist --no-scripts --no-progress --no-interaction \
+    $(if [ "$APP_ENV" = "production" ]; then echo "--no-dev"; fi) \
     && composer dump-autoload --optimize
+
+RUN npm install && npm run build && rm -f public/hot
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
