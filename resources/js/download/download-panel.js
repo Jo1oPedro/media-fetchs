@@ -27,6 +27,20 @@ const platformIcons = {
     },
 };
 
+function showToast(message, type = 'alert-success') {
+    const $toast = $(`
+        <div class="toast toast-top toast-end z-50 cursor-pointer">
+            <div class="alert ${type}">
+                <span>${message}</span>
+            </div>
+        </div>
+    `);
+
+    $('body').append($toast);
+    $toast.on('click', () => $toast.remove());
+    setTimeout(() => $toast.remove(), 3000);
+}
+
 function getPlatformIcon(slug) {
     const icon = platformIcons[slug];
     if (icon) {
@@ -104,7 +118,7 @@ $(function () {
         let url = $("#download-form input[type='url']").val();
 
         if(!url || !url.startsWith("http")) {
-            alert("Por favor, insira uma URL valida.");
+            showToast("Por favor, insira uma URL valida.", 'alert-error')
             return;
         }
 
@@ -129,10 +143,12 @@ $(function () {
                 if (response.media) {
                     createMediaCard(response.media);
                 }
+
+                showToast(response.message);
             },
             error: function (xhr) {
                 const response = JSON.parse(xhr.responseText);
-                alert(response.message);
+                showToast(response.message, 'alert-error');
             }
         });
     });
