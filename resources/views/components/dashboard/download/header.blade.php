@@ -5,9 +5,9 @@
             <p class="text-sm text-gray-600">Download from social platforms</p>
         </div>
         <div class="relative flex items-center space-x-4">
-            <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
+            {{--<button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
                 <x-bi-bell-fill class="w-4 h-4"/>
-            </button>
+            </button>--}}
             <button id="header-gear" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
                 <x-bi-gear-fill class="w-4 h-4"/>
             </button>
