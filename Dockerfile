@@ -2,6 +2,7 @@ FROM php:8.4-cli
 
 ARG APP_DIR=/var/www/app
 ARG APP_ENV=local
+ENV APP_ENV=${APP_ENV}
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends curl \
@@ -35,6 +36,7 @@ COPY composer.* ./
 RUN npm install -g chokidar
 
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/supervisord.prod.conf /etc/supervisor/conf.d/supervisord.prod.conf
 
 RUN rm -rf vendor && rm -rf node_modules \
     && composer install --prefer-dist --no-scripts --no-progress --no-interaction \
@@ -43,4 +45,8 @@ RUN rm -rf vendor && rm -rf node_modules \
 
 RUN npm install && npm run build && rm -f public/hot
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD sh -c "if [ \"$APP_ENV\" = 'production' ]; then \
+    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.prod.conf; \
+  else \
+    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf; \
+  fi"
