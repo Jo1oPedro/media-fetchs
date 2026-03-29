@@ -2,10 +2,9 @@
 
 namespace App\Events;
 
+use App\DTO\MediaDTO;
 use App\Models\Media;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -40,11 +39,7 @@ class MediaStatusUpdated implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'media' => [
-                'id' => $this->media->id,
-                'status' => $this->media->status,
-                's3_url' => $this->media->s3_url,
-            ],
+            'media' => MediaDTO::fromModel($this->media)->toArray(),
         ];
     }
 }

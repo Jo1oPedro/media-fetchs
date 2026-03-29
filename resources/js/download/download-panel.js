@@ -57,6 +57,8 @@ function listenForMediaUpdate(mediaId, $card) {
             if (e.media.s3_url) {
                 $card.find('a[target="_blank"]').attr('href', e.media.s3_url);
             }
+
+            showToast(`Download ${e.media.platform} concluido com sucesso!`)
         });
 }
 

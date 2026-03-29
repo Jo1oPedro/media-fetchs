@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\MediaDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\MediaDownloadController\DownloadFormRequest;
 use App\Service\MediaHelper;
@@ -34,13 +35,7 @@ class MediaDownloadController extends Controller
 
         return response()->json([
             "message" => "Url salva com sucesso!",
-            "media" => [
-                "id" => $media->id,
-                "status" => $media->status ?? "pending",
-                "platform" => $media->socialNetwork?->slug,
-                "format" => $media->format,
-                "original_url" => $media->original_url,
-            ]
+            "media" => MediaDTO::fromModel($media)->toArray(),
         ]);
     }
 }
