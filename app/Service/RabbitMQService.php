@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AMQPConnectionConfig;
+use PhpAmqpLib\Connection\AMQPConnectionFactory;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -17,13 +19,15 @@ class RabbitMQService
     {
         $this->queue = config("amqp.queue");
 
-        $this->connection = new AMQPStreamConnection(
-            config('amqp.host'),
-            config('amqp.port'),
-            config('amqp.user'),
-            config('amqp.password'),
-            config('amqp.vhost')
-        );
+        $amqpConfig = new AMQPConnectionConfig();
+        $amqpConfig->setHost(config('amqp.host'));
+        $amqpConfig->setPort(config('amqp.port'));
+        $amqpConfig->setUser(config('amqp.user'));
+        $amqpConfig->setPassword(config('amqp.password'));
+        $amqpConfig->setVhost(config('amqp.vhost'));
+        $amqpConfig->setIsSecure(true);
+
+        $this->connection = AMQPConnectionFactory::create($amqpConfig);
 
         $this->channel = $this->connection->channel();
 
