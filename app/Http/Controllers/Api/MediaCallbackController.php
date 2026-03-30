@@ -9,7 +9,7 @@ use App\Models\Media;
 
 class MediaCallbackController extends Controller
 {
-    public function updateMediaStatus(UpdateMediaStatusFormRequest $request, Media $media)
+    public function __invoke(UpdateMediaStatusFormRequest $request, Media $media)
     {
         $media = Media::findOrFail($request->input("media_id"));
 

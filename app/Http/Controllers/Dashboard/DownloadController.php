@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DownloadController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $socialNetworksAvailable = SocialNetwork::all();
         $recentMediaDownloads = Auth::user()

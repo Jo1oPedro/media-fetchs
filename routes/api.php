@@ -10,11 +10,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware("auth:sanctum")->group(function () {
-    Route::post("/media", [MediaDownloadController::class, "download"]);
+    Route::post("/media", MediaDownloadController::class);
 });
 
 Route::middleware("verify.token")->group(function () {
-   Route::patch("/media/{media}", [MediaCallbackController::class, "updateMediaStatus"]);
+   Route::patch("/media/{media}", MediaCallbackController::class);
 });
 
 Route::get("/dale", function () {

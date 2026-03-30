@@ -16,7 +16,7 @@ class MediaDownloadController extends Controller
         protected MediaHelper $mediaHelper
     ) {}
 
-    public function download(DownloadFormRequest $request): JsonResponse
+    public function __invoke(DownloadFormRequest $request): JsonResponse
     {
         try {
             $media = $this->mediaHelper->publishMediaRabbitMQ(

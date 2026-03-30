@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MyDownloadController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $downloads = Auth::user()
             ->medias()

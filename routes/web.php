@@ -3,7 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\DownloadController;
 use App\Http\Controllers\Dashboard\MyDownloadController;
-use App\Http\Controllers\DiscordController;
+use App\Http\Controllers\Discord\DiscordOauthController;
+use App\Http\Controllers\Discord\ProcessOauthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,12 +18,12 @@ Route::middleware("guest")->group(function () {
     Route::get("/login", [AuthController::class, "showLogin"])->name("login.form");
     Route::post("/login", [AuthController::class, "login"])->name("login");
 
-    Route::get("/discord-oauth", [DiscordController::class, "discordOauth"])->name("discord.oauth");
-    Route::get("/process-oauth", [DiscordController::class, "processOauth"])->name("discord.process-oauth");
+    Route::get("/discord-oauth", DiscordOauthController::class)->name("discord.oauth");
+    Route::get("/process-oauth", ProcessOauthController::class)->name("discord.process-oauth");
 });
 
 Route::middleware("auth")->group(function () {
     Route::get("/logout", [AuthController::class, "logout"])->name("logout");
-    Route::get("/download", [DownloadController::class, "index"])->name("download");
-    Route::get("/my-downloads", [MyDownloadController::class, "index"])->name("my-downloads");
+    Route::get("/download", DownloadController::class)->name("download");
+    Route::get("/my-downloads", MyDownloadController::class)->name("my-downloads");
 });
