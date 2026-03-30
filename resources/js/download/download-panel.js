@@ -58,7 +58,11 @@ function listenForMediaUpdate(mediaId, $card) {
                 $card.find('a[target="_blank"]').attr('href', e.media.s3_url);
             }
 
-            showToast(`Download ${e.media.platform} concluido com sucesso!`)
+            if(e.media.status !== "success") {
+                showToast(`Download ${e.media.platform} falhou!`, 'alert-error');
+                return;
+            }
+            showToast(`Download ${e.media.platform} concluido com sucesso!`);
         });
 }
 
