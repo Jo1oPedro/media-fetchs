@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\MediaController;
 
+use App\Enums\MediaStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMediaStatusFormRequest extends FormRequest
 {
@@ -23,8 +25,12 @@ class UpdateMediaStatusFormRequest extends FormRequest
     {
         return [
             "media_id" => ["required", "exists:media,id"],
-            "url" => ["required", "url"],
-            "status" => ["required", "string"]
+            "url" => [
+                Rule::requiredIf($this->input('status') !== MediaStatus::Failed->value),
+                "nullable",
+                "url",
+            ],
+            "status" => ["required", Rule::enum(MediaStatus::class)],
         ];
     }
 }
