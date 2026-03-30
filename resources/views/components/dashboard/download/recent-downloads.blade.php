@@ -24,8 +24,15 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                        {{ ucfirst($media->status) }}
+                    @php
+                        $statusClasses = match($media->status) {
+                            App\Enums\MediaStatus::Success => 'bg-green-100 text-green-800',
+                            App\Enums\MediaStatus::Failed => 'bg-red-100 text-red-800',
+                            default => 'bg-yellow-100 text-yellow-800',
+                        };
+                    @endphp
+                    <span class="px-2 py-1 {{ $statusClasses }} text-xs rounded-full">
+                        {{ ucfirst($media->status->value) }}
                     </span>
                     <a
                         href="{{ $media->s3_url ?? $media->original_url }}"

@@ -77,13 +77,13 @@
                                             <td>
                                                 @php
                                                     $statusClasses = match($media->status) {
-                                                        'success' => 'badge-success',
-                                                        'failed' => 'badge-error',
-                                                        default => 'badge-warning',
+                                                        App\Enums\MediaStatus::Success => 'bg-green-100 text-green-800',
+                                                        App\Enums\MediaStatus::Failed => 'bg-red-100 text-red-800',
+                                                        default => 'bg-yellow-100 text-yellow-800',
                                                     };
                                                 @endphp
-                                                <span class="badge {{ $statusClasses }}">
-                                                    {{ ucfirst($media->status) }}
+                                                <span class="px-2 py-1 {{ $statusClasses }} text-xs rounded-full">
+                                                    {{ ucfirst($media->status->value) }}
                                                 </span>
                                             </td>
                                             <td class="text-sm text-gray-500">
