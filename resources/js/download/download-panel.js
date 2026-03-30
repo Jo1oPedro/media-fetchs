@@ -49,10 +49,22 @@ function getPlatformIcon(slug) {
     return `<span class="text-white text-xs font-bold uppercase">${(slug || 'unknown').substring(0, 3)}</span>`;
 }
 
+function getStatusClasses(status) {
+    switch (status) {
+        case 'success': return 'bg-green-100 text-green-800';
+        case 'failed': return 'bg-red-100 text-red-800';
+        default: return 'bg-yellow-100 text-yellow-800';
+    }
+}
+
 function listenForMediaUpdate(mediaId, $card) {
     window.Echo.private(`media.${mediaId}`)
         .listen('MediaStatusUpdated', (e) => {
-            $card.find('.rounded-full').text(e.media.status.charAt(0).toUpperCase() + e.media.status.slice(1));
+            const $badge = $card.find('.rounded-full');
+            $badge
+                .removeClass('bg-green-100 text-green-800 bg-red-100 text-red-800 bg-yellow-100 text-yellow-800')
+                .addClass(getStatusClasses(e.media.status))
+                .text(e.media.status.charAt(0).toUpperCase() + e.media.status.slice(1));
 
             if (e.media.s3_url) {
                 $card.find('a[target="_blank"]').attr('href', e.media.s3_url);
@@ -94,7 +106,7 @@ function createMediaCard(media) {
                 </div>
             </div>
             <div class="flex items-center space-x-2">
-                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                <span class="px-2 py-1 ${getStatusClasses(media.status)} text-xs rounded-full">
                     ${status}
                 </span>
                 <a
