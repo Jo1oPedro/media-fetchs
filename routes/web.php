@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\DownloadController;
+use App\Http\Controllers\Dashboard\MyDownloadController;
 use App\Http\Controllers\DiscordController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,5 @@ Route::middleware("guest")->group(function () {
 Route::middleware("auth")->group(function () {
     Route::get("/logout", [AuthController::class, "logout"])->name("logout");
     Route::get("/download", [DownloadController::class, "index"])->name("download");
+    Route::get("/my-downloads", [MyDownloadController::class, "index"])->name("my-downloads");
 });

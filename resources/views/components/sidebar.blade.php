@@ -10,21 +10,26 @@
     <nav id="sidebar-nav" class="flex-1 p-4">
         <ul class="space-y-2">
             <li>
-                <span
-                    class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium cursor-pointer hover:bg-indigo-500/10 {{ request()->routeIs("download") ? 'text-indigo-500 bg-indigo-500/10' : 'text-gray-700' }}"
+                <a
+                    href="{{ route('download') }}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium cursor-pointer hover:bg-indigo-500/10 {{ request()->routeIs('download') ? 'text-indigo-500 bg-indigo-500/10' : 'text-gray-700' }}"
                     id="nav-download"
                 >
                     <x-eva-download-outline class="w-5 h-5" />
                     <span class="hidden md:block">Download</span>
-                </span>
+                </a>
             </li>
             <li>
-                <span class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg font-medium cursor-pointer hover:bg-indigo-500/10" id="nav-my-download">
+                <a
+                    href="{{ route('my-downloads') }}"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium cursor-pointer hover:bg-indigo-500/10 {{ request()->routeIs('my-downloads') ? 'text-indigo-500 bg-indigo-500/10' : 'text-gray-700' }}"
+                    id="nav-my-download"
+                >
                     <x-fas-folder-open class="w-5 h-5" />
                     <span class="hidden md:block">My Downloads</span>
-                </span>
+                </a>
             </li>
-            <li>
+           {{--<li>
                 <span class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg font-medium cursor-pointer hover:bg-indigo-500/10" id="nav-download-queue">
                     <x-zondicon-list class="w-5 h-5" />
                     <span class="hidden md:block">Download Queue</span>
@@ -35,7 +40,7 @@
                     <x-heroicon-s-user class="w-5 h-5" />
                     <span class="hidden md:block">Profile</span>
                 </span>
-            </li>
+            </li>--}}
         </ul>
     </nav>
 </aside>

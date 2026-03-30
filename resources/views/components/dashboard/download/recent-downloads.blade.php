@@ -1,7 +1,7 @@
 <div id="recent-downloads" class="bg-white rounded-lg border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-medium text-gray-900">Recent Downloads</h3>
-        <span class="text-sm text-indigo-500 hover:text-indigo-500/80 cursor-pointer">View all</span>
+        <a href="{{ route('my-downloads') }}" class="text-sm text-indigo-500 hover:text-indigo-500/80 cursor-pointer">View all</a>
     </div>
 
     <div class="space-y-4">
