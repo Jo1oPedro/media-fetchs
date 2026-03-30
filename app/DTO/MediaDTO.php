@@ -2,13 +2,14 @@
 
 namespace App\DTO;
 
+use App\Enums\MediaStatus;
 use App\Models\Media;
 
 class MediaDTO
 {
     public function __construct(
         public readonly int $id,
-        public readonly string $status,
+        public readonly MediaStatus $status,
         public readonly ?string $platform,
         public readonly ?string $format,
         public readonly ?string $original_url,
@@ -19,7 +20,7 @@ class MediaDTO
     {
         return new self(
             id: $media->id,
-            status: $media->status ?? 'pending',
+            status: $media->status ?? MediaStatus::Pending,
             platform: $media->socialNetwork?->slug,
             format: $media->format,
             original_url: $media->original_url,
@@ -31,7 +32,7 @@ class MediaDTO
     {
         return [
             'id' => $this->id,
-            'status' => $this->status,
+            'status' => $this->status->value,
             'platform' => $this->platform,
             'format' => $this->format,
             'original_url' => $this->original_url,
