@@ -32,7 +32,7 @@ class SocialNetworkSeeder extends Seeder
             [
                 'name' => 'Facebook',
                 'slug' => 'facebook',
-                'base_url' => 'https://www.facebook.com',
+                'base_url' => 'https://web.facebook.com',
             ],
             [
                 'name' => 'TikTok',
