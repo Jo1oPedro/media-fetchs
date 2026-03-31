@@ -90,15 +90,26 @@
                                                 {{ $media->created_at->format('d/m/Y H:i') }}
                                             </td>
                                             <td>
-                                                @if($media->s3_url || $media->original_url)
-                                                    <a
-                                                        href="{{ $media->s3_url ?? $media->original_url }}"
-                                                        target="_blank"
-                                                        class="btn btn-ghost btn-sm"
-                                                    >
-                                                        <x-eva-download-outline class="w-4 h-4" />
-                                                    </a>
-                                                @endif
+                                                <div class="flex items-center gap-1">
+                                                    @if($media->status === App\Enums\MediaStatus::Failed)
+                                                        <button
+                                                            class="btn-retry btn btn-ghost btn-sm text-orange-500 hover:text-orange-700"
+                                                            data-media-id="{{ $media->id }}"
+                                                            title="Retry download"
+                                                        >
+                                                            <x-heroicon-o-arrow-path class="w-4 h-4" />
+                                                        </button>
+                                                    @endif
+                                                    @if($media->s3_url || $media->original_url)
+                                                        <a
+                                                            href="{{ $media->s3_url ?? $media->original_url }}"
+                                                            target="_blank"
+                                                            class="btn btn-ghost btn-sm"
+                                                        >
+                                                            <x-eva-download-outline class="w-4 h-4" />
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -115,3 +126,34 @@
         </main>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btn-retry[data-media-id]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const mediaId = this.dataset.mediaId;
+                const row = this.closest('tr');
+                const csrfToken = document.querySelector("meta[name='csrf-token']").content;
+
+                fetch(`/api/media/${mediaId}/retry`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                }).then(r => r.json()).then(data => {
+                    const badge = row.querySelector('.rounded-full');
+                    badge.className = 'px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full';
+                    badge.textContent = 'Pending';
+                    btn.remove();
+                }).catch(() => {
+                    alert('Erro ao reenviar a midia.');
+                });
+            });
+        });
+    });
+</script>
+@endpush

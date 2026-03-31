@@ -57,6 +57,32 @@ function getStatusClasses(status) {
     }
 }
 
+function retryMedia(mediaId, $card) {
+    const csrfToken = $("meta[name='csrf-token']").attr("content");
+
+    $.ajax({
+        url: `/api/media/${mediaId}/retry`,
+        method: "POST",
+        headers: { 'X-CSRF-TOKEN': csrfToken },
+        data: { _token: csrfToken },
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+            const $badge = $card.find('.rounded-full');
+            $badge
+                .removeClass('bg-green-100 text-green-800 bg-red-100 text-red-800 bg-yellow-100 text-yellow-800')
+                .addClass(getStatusClasses('pending'))
+                .text('Pending');
+
+            $card.find('.btn-retry').remove();
+            showToast(response.message);
+        },
+        error: function (xhr) {
+            const response = JSON.parse(xhr.responseText);
+            showToast(response.message, 'alert-error');
+        }
+    });
+}
+
 function listenForMediaUpdate(mediaId, $card) {
     window.Echo.private(`media.${mediaId}`)
         .listen('MediaStatusUpdated', (e) => {
@@ -70,10 +96,22 @@ function listenForMediaUpdate(mediaId, $card) {
                 $card.find('a[target="_blank"]').attr('href', e.media.s3_url);
             }
 
-            if(e.media.status !== "success") {
+            $card.find('.btn-retry').remove();
+
+            if (e.media.status === "failed") {
+                const $retryBtn = $(`
+                    <button class="btn-retry inline-flex p-2 text-orange-500 hover:text-orange-700 cursor-pointer" title="Retry download">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182"/>
+                        </svg>
+                    </button>
+                `);
+                $retryBtn.on('click', () => retryMedia(mediaId, $card));
+                $card.find('.rounded-full').after($retryBtn);
                 showToast(`Download ${e.media.platform} falhou!`, 'alert-error');
                 return;
             }
+
             showToast(`Download ${e.media.platform} concluido com sucesso!`);
         });
 }
@@ -129,6 +167,13 @@ function createMediaCard(media) {
 
 $(function () {
     listenForMediaUpdates();
+
+    $(document).on('click', '.btn-retry[data-media-id]', function (e) {
+        e.preventDefault();
+        const mediaId = $(this).data('media-id');
+        const $card = $(this).closest('[data-media-id]');
+        retryMedia(mediaId, $card);
+    });
 
     $("#download-form button").on("click", function (e) {
         e.preventDefault();

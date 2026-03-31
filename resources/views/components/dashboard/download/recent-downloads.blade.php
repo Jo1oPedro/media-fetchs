@@ -34,6 +34,15 @@
                     <span class="px-2 py-1 {{ $statusClasses }} text-xs rounded-full">
                         {{ ucfirst($media->status->value) }}
                     </span>
+                    @if($media->status === App\Enums\MediaStatus::Failed)
+                        <button
+                            class="btn-retry inline-flex p-2 text-orange-500 hover:text-orange-700 cursor-pointer"
+                            data-media-id="{{ $media->id }}"
+                            title="Retry download"
+                        >
+                            <x-heroicon-o-arrow-path class="w-4 h-4"/>
+                        </button>
+                    @endif
                     <a
                         href="{{ $media->s3_url ?? $media->original_url }}"
                         target="_blank"

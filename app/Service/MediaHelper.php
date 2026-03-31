@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Enums\MediaStatus;
 use App\Models\Media;
 use App\Models\SocialNetwork;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +25,29 @@ class MediaHelper
             "format" => $format
         ]);
 
-        $this->rabbitMQService->publish(json_encode([
-            "media_id" => $media->id,
-            "download_url" => $url,
-            "format" => $format
-        ]));
+        $this->publishToQueue($media);
 
         return $media->load('socialNetwork');
+    }
+
+    public function retryMedia(Media $media): Media
+    {
+        $media->update([
+            "status" => MediaStatus::Pending,
+            "s3_url" => null,
+        ]);
+
+        $this->publishToQueue($media);
+
+        return $media->load('socialNetwork');
+    }
+
+    private function publishToQueue(Media $media): void
+    {
+        $this->rabbitMQService->publish(json_encode([
+            "media_id" => $media->id,
+            "download_url" => $media->original_url,
+            "format" => $media->format,
+        ]));
     }
 }
