@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Enums\MediaFormat;
 use App\Enums\MediaStatus;
 use App\Models\Media;
 
@@ -11,7 +12,7 @@ class MediaDTO
         public readonly int $id,
         public readonly MediaStatus $status,
         public readonly ?string $platform,
-        public readonly ?string $format,
+        public readonly ?MediaFormat $format,
         public readonly ?string $original_url,
         public readonly ?string $s3_url,
     ) {}
@@ -34,7 +35,7 @@ class MediaDTO
             'id' => $this->id,
             'status' => $this->status->value,
             'platform' => $this->platform,
-            'format' => $this->format,
+            'format' => $this->format?->value,
             'original_url' => $this->original_url,
             's3_url' => $this->s3_url,
         ];

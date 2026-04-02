@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Dashboard\Download;
 
+use App\Enums\MediaFormat;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -42,11 +43,11 @@ class RecentDownloads extends Component
         return view('components.dashboard.download.recent-downloads');
     }
 
-    public function getMediaType($format)
+    public function getMediaType(MediaFormat $format): string
     {
-        if($format === "mp3" || $format === "mp4") {
-            return "Video";
-        }
-        return "";
+        return match ($format) {
+            MediaFormat::Mp4 => "Video",
+            MediaFormat::Mp3 => "Audio",
+        };
     }
 }

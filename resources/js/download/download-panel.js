@@ -179,6 +179,7 @@ $(function () {
         e.preventDefault();
 
         let url = $("#download-form input[type='url']").val();
+        let format = $("#download-form select[name='format']").val() || 'mp4';
 
         if(!url || !url.startsWith("http")) {
             showToast("Por favor, insira uma URL valida.", 'alert-error')
@@ -195,6 +196,7 @@ $(function () {
             },
             data: {
                 url: url,
+                format: format,
                 _token: csrfToken
             },
             xhrFields: {

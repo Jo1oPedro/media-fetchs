@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Api\MediaDownloadController;
 
+use App\Enums\MediaFormat;
 use App\Rules\SupportedSocialNetworkUrl;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DownloadFormRequest extends FormRequest
 {
@@ -23,7 +25,8 @@ class DownloadFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "url" => ["required", "url", new SupportedSocialNetworkUrl()]
+            "url" => ["required", "url", new SupportedSocialNetworkUrl()],
+            "format" => ["required", Rule::enum(MediaFormat::class)],
         ];
     }
 }

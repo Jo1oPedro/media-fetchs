@@ -20,7 +20,8 @@ class MediaDownloadController extends Controller
     {
         try {
             $media = $this->mediaHelper->publishMediaRabbitMQ(
-                url: $request->input("url")
+                url: $request->input("url"),
+                format: $request->input("format"),
             );
         } catch (\Exception $exception) {
             $traceId = (string) Str::uuid();

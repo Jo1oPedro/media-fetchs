@@ -47,7 +47,7 @@ class MediaHelper
         $this->rabbitMQService->publish(json_encode([
             "media_id" => $media->id,
             "download_url" => $media->original_url,
-            "format" => $media->format,
+            "format" => $media->format->value,
         ]));
     }
 }

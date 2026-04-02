@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MediaFormat;
 use App\Enums\MediaStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class Media extends Model
     {
         return [
             'status' => MediaStatus::class,
+            'format' => MediaFormat::class,
         ];
     }
 

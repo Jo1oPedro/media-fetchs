@@ -8,13 +8,18 @@
                 class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
         </div>
+        <select name="format" class="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            @foreach(App\Enums\MediaFormat::cases() as $format)
+                <option value="{{ $format->value }}">{{ strtoupper($format->value) }}</option>
+            @endforeach
+        </select>
         <button class="flex items-center w-fit space-x-2 px-6 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-500/90 font-medium cursor-pointer">
             <x-eva-download-outline class="w-4 h-4 text-white"/>
             <span>Download</span>
         </button>
     </div>
     <p class="text-xs text-gray-500 mt-2">
-        Supported formats: MP4, MP3, JPG, PNG, GIF
+        Supported formats: MP4, MP3
     </p>
 </div>
 

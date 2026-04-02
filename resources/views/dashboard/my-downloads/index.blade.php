@@ -72,7 +72,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge badge-ghost">{{ strtoupper($media->format ?? '-') }}</span>
+                                                <span class="badge badge-ghost">{{ strtoupper($media->format?->value ?? '-') }}</span>
                                             </td>
                                             <td>
                                                 @php
