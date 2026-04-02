@@ -25,7 +25,10 @@ class RabbitMQService
         $amqpConfig->setUser(config('amqp.user'));
         $amqpConfig->setPassword(config('amqp.password'));
         $amqpConfig->setVhost(config('amqp.vhost'));
-        $amqpConfig->setIsSecure(true);
+
+        if(config('app.env') === 'production') {
+            $amqpConfig->setIsSecure(true);
+        }
 
         $this->connection = AMQPConnectionFactory::create($amqpConfig);
 
