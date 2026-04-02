@@ -6,7 +6,7 @@ use App\DTO\MediaDTO;
 use App\Enums\MediaStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Media;
-use App\Service\MediaHelper;
+use App\Service\MediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class MediaRetryController extends Controller
 {
     public function __construct(
-        protected MediaHelper $mediaHelper
+        protected MediaService $mediaService
     ) {}
 
     public function __invoke(Media $media): JsonResponse
@@ -26,7 +26,7 @@ class MediaRetryController extends Controller
         }
 
         try {
-            $media = $this->mediaHelper->retryMedia($media);
+            $media = $this->mediaService->retryMedia($media);
         } catch (\Exception $exception) {
             $traceId = (string) Str::uuid();
             Log::error("[{$traceId}] {$exception->getMessage()}", [
