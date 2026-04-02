@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTO\CreateMediaDTO;
+use App\Enums\MediaStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Service\MediaService;
@@ -17,12 +18,13 @@ class MediaCallbackDownloadFromDiscord extends Controller
 
     public function __invoke(Request $request): JsonResponse
     {
-        $user = User::whereDiscordId($request->discord_id)->firstOrFail();
+        $user = User::whereDiscordId($request->user_discord_id)->firstOrFail();
 
         $dto = new CreateMediaDTO(
             originalUrl: $request->original_url,
             format: $request->media_format,
             s3Url: $request->s3_url,
+            status: MediaStatus::Success->value,
         );
 
         $media = $this->mediaService->createMedia($user, $dto);

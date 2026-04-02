@@ -7,6 +7,7 @@ use App\Enums\MediaStatus;
 use App\Models\Media;
 use App\Models\SocialNetwork;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class MediaService
 {
@@ -25,6 +26,7 @@ class MediaService
             "original_url" => $dto->originalUrl,
             "format" => $dto->format,
             "s3_url" => $dto->s3Url,
+            "status" => $dto->status,
         ]);
     }
 
