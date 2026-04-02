@@ -4,7 +4,7 @@
     </h3>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach($availablePlatforms as $platform)
-            <button id="{{ $platform->slug }}" class="relative platform-btn flex flex-col items-center p-4 border rounded-lg hover:border-indigo-500 hover:bg-indigo-500/5 transition-colors border-indigo-500 ">
+            <button id="{{ $platform->slug }}" class="relative platform-btn flex flex-col items-center p-4 border rounded-lg border-indigo-500 ">
                 <div class="absolute -top-1.5 -right-1.5 bg-green-500 rounded-full p-1">
                     <x-feathericon-check class="text-white w-3 h-3"/>
                 </div>

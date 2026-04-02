@@ -29,7 +29,7 @@
     @push("scripts")
         <script>
             window.addEventListener("load", function () {
-                $("#header-gear").on("click", function (dale) {
+                $("#header-gear").on("click", function () {
                     const headerOptions = $(this).siblings("#header-options");
                     headerOptions.toggleClass("hidden");
                 });

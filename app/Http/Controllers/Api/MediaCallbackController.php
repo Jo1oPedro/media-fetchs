@@ -20,6 +20,6 @@ class MediaCallbackController extends Controller
 
         event(new MediaStatusUpdated($media));
 
-        return response()->json(["dale"]);
+        return response()->json();
     }
 }

@@ -18,7 +18,3 @@ Route::middleware("auth:sanctum")->group(function () {
 Route::middleware("verify.token")->group(function () {
    Route::patch("/media/{media}", MediaCallbackController::class);
 });
-
-Route::get("/dale", function () {
-   return response()->json(["response" => "dale123"]);
-});
